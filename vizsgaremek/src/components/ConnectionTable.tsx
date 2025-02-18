@@ -30,5 +30,8 @@ const ConnectionTable = ({ connections }: {
         </Card>
     );
 };
+export const ConnectionTable: React.FC = () => {
+    return <div>Connection Table</div>
+};
 
 export default ConnectionTable;
