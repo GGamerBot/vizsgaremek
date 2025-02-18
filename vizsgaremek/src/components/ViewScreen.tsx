@@ -11,5 +11,8 @@ const ViewScreen = ({ title, content }: { title: string; content: string }) => {
         </Card>
     );
 };
+export const ViewScreen: React.FC = () => {
+    return <div>View Screen</div>
+};
 
 export default ViewScreen;
