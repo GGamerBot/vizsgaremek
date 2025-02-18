@@ -32,6 +32,9 @@ const EditScreen = ({ title, content, setTitle, setContent, onSave }: {
         </Card>
     );
 };
+export const EditScreen: React.FC = () => {
+    return <div>Edit Screen</div>
+};
 
 export default EditScreen;
 
