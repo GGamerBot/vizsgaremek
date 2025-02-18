@@ -1,12 +1,14 @@
+// Backend Structure for CYOA Game Creator
+ 
 import express, { Request, Response } from 'express';
 import { Pool } from 'pg';
-
+ 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+ 
 // Middleware
 app.use(express.json());
-
+ 
 // PostgreSQL connection setup
 const pool = new Pool({
   user: 'your_username',
@@ -15,9 +17,9 @@ const pool = new Pool({
   password: 'your_password',
   port: 5432,
 });
-
+ 
 // Routes
-
+ 
 // 1. Users
 app.post('/users', async (req: Request, res: Response) => {
   const { username, profilePicture } = req.body;
@@ -32,7 +34,7 @@ app.post('/users', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
 app.get('/users/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -46,7 +48,7 @@ app.get('/users/:id', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
 // 2. Games
 app.post('/games', async (req: Request, res: Response) => {
   const { creatorId, title } = req.body;
@@ -61,7 +63,7 @@ app.post('/games', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
 app.get('/games/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -75,7 +77,7 @@ app.get('/games/:id', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
 // 3. Screens
 app.post('/screens', async (req: Request, res: Response) => {
   const { gameId, content } = req.body;
@@ -90,7 +92,7 @@ app.post('/screens', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
 // 4. Connections
 app.post('/connections', async (req: Request, res: Response) => {
   const { screen1, screen2, condition } = req.body;
@@ -105,7 +107,7 @@ app.post('/connections', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
 // 5. Items
 app.post('/items', async (req: Request, res: Response) => {
   const { gameId, description } = req.body;
@@ -120,8 +122,21 @@ app.post('/items', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+ 
+// 6. Leaderboard
+app.get('/leaderboard', async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(
+      'SELECT username, score FROM users ORDER BY score DESC LIMIT 10'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+ 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+console.log(`Server is running on http://localhost:${PORT}`);
 });
